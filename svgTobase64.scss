@@ -80,6 +80,7 @@ $indexMap: (
 
 // 通过索引返回base64编码
 @function getBase64Code ($index: 0) {
+	// index + 1 是因为 sass 的索引是由1开始而不是0
 	$index: $index + 1;
 	$code: '';
 	@if($index > 0 and $index <= 65) {
