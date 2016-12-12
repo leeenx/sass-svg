@@ -241,7 +241,11 @@ $asciiMap: (
 		@return "00======";
 	}
 	@else {
-		@return map-get($asciiMap, $char);
+		$bin: map-get($asciiMap, $char);
+		@if(null == $bin){
+			$bin: map-get($asciiMap, ' '); // 当空格处理
+		}
+		@return $bin;
 	}
 }
 
