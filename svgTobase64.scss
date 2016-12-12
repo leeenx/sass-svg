@@ -90,8 +90,22 @@ $indexMap: (
 	@return $code;
 };
 
+@function insertXmlns($svg) {
+	// 检查是否存在 xmlns，如果没有就插上去
+	$xmlns: 'xmlns="http://www.w3.org/2000/svg"';
+	$xmlns2: "xmlns='http://www.w3.org/2000/svg'";
+	$insertPos: str_index($svg, "<svg");// 如果是 null，应该要报错了
+	@if(null == str_index($svg, $xmlns) && null == str_index($svg, $xmlns2) && null != $insertPos) {
+		// 需要插入 xmlns
+		$svg: str_insert($svg, " "+$xmlns, $insertPos + 4);
+	}
+
+	@return $svg
+}
+
 // 将svg字符串转换成base64数据
 @function svgToBase64 ($svg: '') {
+	$svg: insertXmlns($svg);
 	$base64: 'data:image/svg+xml;base64,';
 	$str_len: str_length($svg);
 	$remainder: $str_len % 3;
