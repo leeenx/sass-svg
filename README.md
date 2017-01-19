@@ -17,7 +17,7 @@ sass-svg-encodeuri($svg-string);
 $svg: '<svg viewBox="0 0 750 400" width="750" height="400">
 			<path d="M0,0 L750,0 L750,400 L388,400 L375,387, L362,400 L0,400Z" fill="#0f0"></path>
 		</svg>';
-background: url(#{sass-svg-encodeuri($svg)}) 0 0 no-repeat;
+background: url(sass-svg-encodeuri($svg)) 0 0 no-repeat;
 background-size: 100% 100%;
 ```
 
@@ -37,6 +37,6 @@ sass-svg-base64($svg-string);
 $svg: '<svg viewBox="0 0 750 400" width="750" height="400">
 			<path d="M0,0 L750,0 L750,400 L388,400 L375,387, L362,400 L0,400Z" fill="#0f0"></path>
 		</svg>';
-background: url(#{sass-svg-base64($svg)}) 0 0 no-repeat;
+background: url(sass-svg-base64($svg)) 0 0 no-repeat;
 background-size: 100% 100%;
 ```
