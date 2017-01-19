@@ -1,94 +1,71 @@
-$base64Codes: (
-	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-	'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-	'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-	'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
-	'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-	'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-	'w', 'x', 'y', 'z', '0', '1', '2', '3',
-	'4', '5', '6', '7', '8', '9', '+', '/',
-	'='
+$base64map: (
+	"000000": 'A',
+	"000001": 'B',
+	"000010": 'C',
+	"000011": 'D',
+	"000100": 'E',
+	"000101": 'F',
+	"000110": 'G',
+	"000111": 'H',
+	"001000": 'I',
+	"001001": 'J',
+	"001010": 'K',
+	"001011": 'L',
+	"001100": 'M',
+	"001101": 'N',
+	"001110": 'O',
+	"001111": 'P',
+	"010000": 'Q',
+	"010001": 'R',
+	"010010": 'S',
+	"010011": 'T',
+	"010100": 'U',
+	"010101": 'V',
+	"010110": 'W',
+	"010111": 'X',
+	"011000": 'Y',
+	"011001": 'Z',
+	"011010": 'a',
+	"011011": 'b',
+	"011100": 'c',
+	"011101": 'd',
+	"011110": 'e',
+	"011111": 'f',
+	"100000": 'g',
+	"100001": 'h',
+	"100010": 'i',
+	"100011": 'j',
+	"100100": 'k',
+	"100101": 'l',
+	"100110": 'm',
+	"100111": 'n',
+	"101000": 'o',
+	"101001": 'p',
+	"101010": 'q',
+	"101011": 'r',
+	"101100": 's',
+	"101101": 't',
+	"101110": 'u',
+	"101111": 'v',
+	"110000": 'w',
+	"110001": 'x',
+	"110010": 'y',
+	"110011": 'z',
+	"110100": '0',
+	"110101": '1',
+	"110110": '2',
+	"110111": '3',
+	"111000": '4',
+	"111001": '5',
+	"111010": '6',
+	"111011": '7',
+	"111100": '8',
+	"111101": '9',
+	"111110": '+',
+	"111111": '/',
+	"======": '='
 );
 
-$indexMap: (
-	"000000": 0,
-	"000001": 1,
-	"000010": 2,
-	"000011": 3,
-	"000100": 4,
-	"000101": 5,
-	"000110": 6,
-	"000111": 7,
-	"001000": 8,
-	"001001": 9,
-	"001010": 10,
-	"001011": 11,
-	"001100": 12,
-	"001101": 13,
-	"001110": 14,
-	"001111": 15,
-	"010000": 16,
-	"010001": 17,
-	"010010": 18,
-	"010011": 19,
-	"010100": 20,
-	"010101": 21,
-	"010110": 22,
-	"010111": 23,
-	"011000": 24,
-	"011001": 25,
-	"011010": 26,
-	"011011": 27,
-	"011100": 28,
-	"011101": 29,
-	"011110": 30,
-	"011111": 31,
-	"100000": 32,
-	"100001": 33,
-	"100010": 34,
-	"100011": 35,
-	"100100": 36,
-	"100101": 37,
-	"100110": 38,
-	"100111": 39,
-	"101000": 40,
-	"101001": 41,
-	"101010": 42,
-	"101011": 43,
-	"101100": 44,
-	"101101": 45,
-	"101110": 46,
-	"101111": 47,
-	"110000": 48,
-	"110001": 49,
-	"110010": 50,
-	"110011": 51,
-	"110100": 52,
-	"110101": 53,
-	"110110": 54,
-	"110111": 55,
-	"111000": 56,
-	"111001": 57,
-	"111010": 58,
-	"111011": 59,
-	"111100": 60,
-	"111101": 61,
-	"111110": 62,
-	"111111": 63,
-	"======": 64
-);
-
-// 通过索引返回base64编码
-@function getBase64Code ($index: 0) {
-	// index + 1 是因为 sass 的索引是由1开始而不是0
-	$index: $index + 1;
-	$code: '';
-	@if($index > 0 and $index <= 65) {
-		// base64 编码只有64个 加上 = 有65个
-		$code: nth($base64Codes, $index);
-	}
-	@return $code;
-};
 
 @function insertXmlns($svg) {
 	// 检查是否存在 xmlns，如果没有就插上去
@@ -103,42 +80,6 @@ $indexMap: (
 	@return $svg
 }
 
-// 将svg字符串转换成base64数据
-@function svgToBase64 ($svg: '') {
-	$svg: insertXmlns($svg);
-	$base64: 'data:image/svg+xml;base64,';
-	$str_len: str_length($svg);
-	$remainder: $str_len % 3;
-	// 源码切片 -- 3个字符为一组
-	$i: 1;
-	@while $i <= $str_len - $remainder {
-		$base64: $base64 + translate3asciiTo4base64(str_slice($svg, $i, $i), str_slice($svg, $i + 1, $i + 1), str_slice($svg, $i + 2, $i + 2));
-		$i: $i + 3;
-	}
-	// 余下的1~2个字符
-	@if($remainder > 0) {
-		$remainderChar1: str_slice($svg, $i, $i);
-		$remainderChar2: '';
-		$remainderChar3: '';
-		$i: $i + 1;
-		@if($i <= $str_len) {
-			$remainderChar2: str_slice($svg, $i, $i);
-			$i: $i + 1;
-			@if($i <= $str_len) {
-				$remainderChar3: str_slice($svg, $i, $i);
-			}
-			@else {
-				$remainderChar3: '-3';
-			}
-		}
-		@else {
-			$remainderChar2: '-1';
-			$remainderChar3: '-2';
-		}
-		$base64: $base64 + translate3asciiTo4base64($remainderChar1, $remainderChar2, $remainderChar3);
-	}
-	@return $base64;
-};
 // ascii码列表 -- 8位二进制
 $asciiMap: (
 	"	": "00001001",
@@ -267,10 +208,47 @@ $asciiMap: (
 @function translate3asciiTo4base64($char1, $char2, $char3) {
 	$binGroup: asciiToBin($char1) + asciiToBin($char2) + asciiToBin($char3);
 	// 分拆成4份
-	@return getBase64Code(getBase64Index(str_slice($binGroup, 1, 6))) + getBase64Code(getBase64Index(str_slice($binGroup, 7, 12))) + getBase64Code(getBase64Index(str_slice($binGroup, 13, 18))) + getBase64Code(getBase64Index(str_slice($binGroup, 19, 24)));
+	@return getBase64Code(str_slice($binGroup, 1, 6)) + getBase64Code(str_slice($binGroup, 7, 12)) + getBase64Code(str_slice($binGroup, 13, 18)) + getBase64Code(str_slice($binGroup, 19, 24));
 }
 
 // 将6个二进制转换成 base64 编码表的索引
-@function getBase64Index($bin) {
-	@return map-get($indexMap, $bin);
+@function getBase64Code($bin) {
+	@return map-get($base64map, $bin);
 }
+
+// 将svg字符串转换成base64数据
+@function sass-svg-base64 ($svg: '') {
+	$svg: insertXmlns($svg);
+	$base64: 'data:image/svg+xml;base64,';
+	$str_len: str_length($svg);
+	$remainder: $str_len % 3;
+	// 源码切片 -- 3个字符为一组
+	$i: 1;
+	@while $i <= $str_len - $remainder {
+		$base64: $base64 + translate3asciiTo4base64(str_slice($svg, $i, $i), str_slice($svg, $i + 1, $i + 1), str_slice($svg, $i + 2, $i + 2));
+		$i: $i + 3;
+	}
+	// 余下的1~2个字符
+	@if($remainder > 0) {
+		$remainderChar1: str_slice($svg, $i, $i);
+		$remainderChar2: '';
+		$remainderChar3: '';
+		$i: $i + 1;
+		@if($i <= $str_len) {
+			$remainderChar2: str_slice($svg, $i, $i);
+			$i: $i + 1;
+			@if($i <= $str_len) {
+				$remainderChar3: str_slice($svg, $i, $i);
+			}
+			@else {
+				$remainderChar3: '-3';
+			}
+		}
+		@else {
+			$remainderChar2: '-1';
+			$remainderChar3: '-2';
+		}
+		$base64: $base64 + translate3asciiTo4base64($remainderChar1, $remainderChar2, $remainderChar3);
+	}
+	@return $base64;
+};
