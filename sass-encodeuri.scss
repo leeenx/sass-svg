@@ -1,0 +1,54 @@
+// ascii码 与 16进制对照表
+$asciiHexMap: (
+	"	": "%09",
+	" ": "%20",
+	"\"": "%22",
+	"%": "%25",
+	"/": "%2f",
+	"<": "%3c",
+	">": "%3e",
+	"\\": "%5c",
+	"^": "%5e",
+	"`": "%60",
+	"{": "%7b",
+	"|": "%7c",
+	"}": "%7d"
+);
+
+@function getHexCode($ascii) {
+	$n: '
+';
+	@if($n == $ascii) {
+		// 换行
+		$ascii: ""; // 当成空格
+	}
+	$hex: map-get($asciiHexMap, $ascii);
+	@if(null == $hex) {
+		$hex: $ascii; // 表示是 0~9, a~z, A~Z, -. 原样返回
+	}
+	@return $hex;
+}
+
+@function insertXmlns($svg) {
+	// 检查是否存在 xmlns，如果没有就插上去
+	$xmlns: 'xmlns="http://www.w3.org/2000/svg"';
+	$xmlns2: "xmlns='http://www.w3.org/2000/svg'";
+	$insertPos: str_index($svg, "<svg");// 如果是 null，应该要报错了
+	@if(null == str_index($svg, $xmlns) && null == str_index($svg, $xmlns2) && null != $insertPos) {
+		// 需要插入 xmlns
+		$svg: str_insert($svg, " "+$xmlns, $insertPos + 4);
+	}
+
+	@return $svg
+}
+
+// 将svg字符串转换成 URL 编码
+@function encodeURI ($svg: '') {
+	$svg: insertXmlns($svg);
+	$url: 'data:image/svg+xml;charset=utf-8,';
+	$str_len: str_length($svg);
+	@for $i from 1 through $str_len {
+		$url: $url + getHexCode(str_slice($svg, $i, $i));
+	}
+	@return $url;
+}
