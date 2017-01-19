@@ -12,7 +12,7 @@
 sass-svg-encodeuri($svg-string);
 ```
 
-具体实例如下：
+实例：
 ```
 $svg: '<svg viewBox="0 0 750 400" width="750" height="400">
 			<path d="M0,0 L750,0 L750,400 L388,400 L375,387, L362,400 L0,400Z" fill="#0f0"></path>
@@ -32,11 +32,11 @@ background-size: 100% 100%;
 sass-svg-base64($svg-string);
 ```
 
-```sass
-
-.test {
-	background: url(sass-svg-base64('<svg viewBox="0 0 750 400" width="750" height="400"><path d="M0,0 L750,0 L750,400 L388,400 L375,387, L362,400 L0,400Z" fill="#0f0"></path></svg>'));
-	background-size: 100px 100px;
-}
-
+实例：
+```
+$svg: '<svg viewBox="0 0 750 400" width="750" height="400">
+			<path d="M0,0 L750,0 L750,400 L388,400 L375,387, L362,400 L0,400Z" fill="#0f0"></path>
+		</svg>';
+background: url(#{sass-svg-base64($svg)}) 0 0 no-repeat;
+background-size: 100% 100%;
 ```
