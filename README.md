@@ -40,3 +40,4 @@ $svg: '<svg viewBox="0 0 750 400" width="750" height="400">
 background: url(sass-svg-base64($svg)) 0 0 no-repeat;
 background-size: 100% 100%;
 ```
+
